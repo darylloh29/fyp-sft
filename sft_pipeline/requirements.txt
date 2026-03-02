@@ -1,0 +1,13 @@
+requests>=2.31.0
+
+# SFT training stack
+transformers>=4.43
+trl>=0.10.1
+peft>=0.12.0
+datasets>=2.20.0
+accelerate>=0.33.0
+pyyaml>=6.0.1
+torch>=2.2.0
+
+# GGUF export (LoRA merge + safe serialization)
+safetensors>=0.4.0

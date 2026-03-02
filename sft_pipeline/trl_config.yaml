@@ -1,0 +1,38 @@
+model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+output_dir: outputs/llama3-8b-sg-property-lora
+
+train_file: data/sft_train.jsonl
+eval_file: data/sft_val.jsonl
+test_file: data/sft_test.jsonl
+
+max_seq_length: 2048
+num_train_epochs: 4
+learning_rate: 0.0001
+weight_decay: 0.01
+warmup_ratio: 0.03
+
+per_device_train_batch_size: 4
+per_device_eval_batch_size: 4
+gradient_accumulation_steps: 8
+logging_steps: 10
+eval_steps: 100
+save_steps: 100
+save_total_limit: 3
+
+lora_r: 32
+lora_alpha: 64
+lora_dropout: 0.05
+target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+bf16: true
+gradient_checkpointing: true
+packing: false
+seed: 42
+
