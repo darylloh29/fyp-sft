@@ -37,7 +37,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Judge generated assistant outputs using Gemini.")
     p.add_argument("--input", required=True, help="Generated JSONL (from generate_teacher.py).")
     p.add_argument("--output", required=True, help="Output JSONL with judge block added.")
-    p.add_argument("--model", default="gemini-2.5-flash", help="Gemini model name.")
+    p.add_argument("--model", default="gemini-3-flash-preview", help="Gemini model name.")
     p.add_argument("--workers", type=int, default=4, help="Parallel workers.")
     p.add_argument("--limit", type=int, default=0, help="Optional limit of rows to process.")
     p.add_argument("--log-every", type=int, default=25, help="Print progress every N completed rows.")

@@ -34,7 +34,7 @@ export GEMINI_API_KEY="YOUR_KEY"
 
 ## Recommended run
 
-Use `gemini-3-flash` if your account supports it; otherwise `gemini-2.5-flash`.
+Use `gemini-3-flash` if your account supports it; otherwise `gemini-3-flash-preview`.
 
 ```bash
 python sft_pipeline/generate_teacher.py \
@@ -114,3 +114,68 @@ Artifacts:
 Notes:
 - If the base model is gated, set `HF_TOKEN` in your shell before running.
 - To skip quantization, pass `--quant none`.
+
+## Evaluate base vs fine-tuned models
+
+Use `evaluate.py` to run both models against the same eval JSONL and generate:
+- `responses.jsonl`
+- `scores.jsonl`
+- `summary_metrics.json`
+- `regression_cases.jsonl`
+- `error_buckets.csv`
+
+Expected eval case format is the schema discussed in this repo's evaluation planning:
+- required fields: `case_id`, `user_prompt`
+- recommended fields: `split`, `task_type`, `difficulty`, `context`, `expected`, `scoring`
+
+Example (local deterministic scoring only):
+
+```bash
+python sft_pipeline/evaluate.py \
+  --cases eval/cases/eval_in_domain.jsonl eval/cases/eval_challenge.jsonl \
+  --base-model-path meta-llama/Meta-Llama-3.1-8B-Instruct \
+  --base-model-id base \
+  --ft-model-path meta-llama/Meta-Llama-3.1-8B-Instruct \
+  --ft-adapter-path outputs/llama3-8b-sg-property-lora/checkpoint-168 \
+  --ft-model-id ft_v1 \
+  --out-dir eval/results \
+  --max-new-tokens 512 \
+  --temperature 0.0
+```
+
+Example with Gemini rubric judge:
+
+```bash
+# Option A: export in shell
+export GEMINI_API_KEY="YOUR_KEY"
+python sft_pipeline/evaluate.py \
+  --cases eval/cases/eval_in_domain.jsonl eval/cases/eval_challenge.jsonl \
+  --base-model-path meta-llama/Meta-Llama-3.1-8B-Instruct \
+  --base-model-id base \
+  --ft-model-path meta-llama/Meta-Llama-3.1-8B-Instruct \
+  --ft-adapter-path outputs/llama3-8b-sg-property-lora/checkpoint-168 \
+  --ft-model-id ft_v1 \
+  --use-gemini-judge \
+  --judge-model gemini-3-flash-preview \
+  --out-dir eval/results
+```
+
+`evaluate.py` also auto-loads `.env` from the repo root/current working directory (without overriding already-exported environment variables), so this works too:
+
+```bash
+# Option B: use .env (auto-loaded)
+cat > .env <<'EOF'
+GEMINI_API_KEY=YOUR_KEY
+EOF
+
+python sft_pipeline/evaluate.py \
+  --cases eval/cases/eval_in_domain.jsonl eval/cases/eval_challenge.jsonl \
+  --base-model-path meta-llama/Meta-Llama-3.1-8B-Instruct \
+  --base-model-id base \
+  --ft-model-path meta-llama/Meta-Llama-3.1-8B-Instruct \
+  --ft-adapter-path outputs/llama3-8b-sg-property-lora/checkpoint-168 \
+  --ft-model-id ft_v1 \
+  --use-gemini-judge \
+  --judge-model gemini-3-flash-preview \
+  --out-dir eval/results
+```
