@@ -91,6 +91,15 @@ Start training:
 python sft_pipeline/train_trl.py --config sft_pipeline/trl_config.yaml
 ```
 
+Plot logged training loss from a saved checkpoint:
+
+```bash
+python sft_pipeline/plot_losses.py \
+  --trainer-state outputs/checkpoint-168/trainer_state.json \
+  --csv-out outputs/loss_points.csv \
+  --png-out outputs/loss_curve.png
+```
+
 Config file:
 - `sft_pipeline/trl_config.yaml`
 
