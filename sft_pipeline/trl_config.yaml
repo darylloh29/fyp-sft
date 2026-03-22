@@ -1,4 +1,4 @@
-model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+model_name_or_path: meta-llama/Meta-Llama-3.1-8B-Instruct
 output_dir: outputs/llama3-8b-sg-property-lora
 
 train_file: data/sft_train.jsonl
@@ -35,4 +35,3 @@ bf16: true
 gradient_checkpointing: true
 packing: false
 seed: 42
-

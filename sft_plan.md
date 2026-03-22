@@ -76,7 +76,7 @@ Hyperparameters used (from config/artifacts):
 - seed: `42`
 
 Base model note:
-- `sft_pipeline/trl_config.yaml` currently shows `meta-llama/Meta-Llama-3-8B-Instruct`.
+- `sft_pipeline/trl_config.yaml` currently shows `meta-llama/Meta-Llama-3.1-8B-Instruct`.
 - Saved adapter metadata in `outputs/adapter_config.json` records `meta-llama/Meta-Llama-3.1-8B-Instruct`.
 - For reproducibility, treat `outputs/adapter_config.json` as source-of-truth for the run that produced current artifacts.
 
